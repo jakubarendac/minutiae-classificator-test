@@ -1,12 +1,10 @@
-from PyQt5 import QtWidgets
-#from MinutiaeClassificator.MinutiaeExtractorWrapper import MinutiaeExtractorWrapper
-
 from gui.Gui import Gui
+from logic.Engine import Engine
 
 class App:
     def __init__(self):
-        #self.__minutiae_classificator = MinutiaeExtractorWrapper()
-        self.__gui = Gui()
+        self.__engine = Engine()
+        self.__gui = Gui(self.__engine)
 
 
 def main():

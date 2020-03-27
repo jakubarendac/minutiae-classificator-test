@@ -5,8 +5,10 @@ from gui.components.Label import Label
 from gui.components.FileDialog import FileDialog
 
 class Settings(QtWidgets.QVBoxLayout):
-    def __init__(self, application):
+    def __init__(self, application, engine):
         QtWidgets.QVBoxLayout.__init__(self)
+
+        self.engine = engine;
 
         self.setSpacing(6)
         self.setObjectName("settings")
@@ -36,7 +38,7 @@ class Settings(QtWidgets.QVBoxLayout):
         self.label_load_network = Label(application, "label_load_network")
         self.settings_layout.addWidget(self.label_load_network)
 
-        self.button_load_network = Button(application, "button_load_network", self.handleButtonClicked)
+        self.button_load_network = Button(application, "button_load_network", self.handle_load_network_modules)
         self.settings_layout.addWidget(self.button_load_network)
         
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -60,12 +62,21 @@ class Settings(QtWidgets.QVBoxLayout):
 
     def handle_coarse_net_button_clicked(self):
         coarse_net_path = self.dialog.open("Select CoarseNet pretrained path", None, "H5 files (*.h5)")
+
+        self.engine.set_coarse_net_path(coarse_net_path)
     
     def handle_fine_net_button_clicked(self):
         fine_net_path = self.dialog.open("Select FineNet pretrained path", None, "H5 files (*.h5)")
 
+        self.engine.set_fine_net_path(fine_net_path)
+
     def handle_classify_net_button_clicked(self):
         classify_net_path = self.dialog.open("Select ClassifyNet pretrained path", None, "H5 files (*.h5)")
+
+        self.engine.set_classify_net_path(classify_net_path)
+
+    def handle_load_network_modules(self):
+        self.engine.load_modules()
 
     def handleButtonClicked(self):
         print "skap som z settgins"

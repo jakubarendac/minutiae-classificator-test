@@ -7,7 +7,7 @@ from.widgets.Classificator import Classificator
 
 class Ui_minutiae_classificator(object):
 
-    def setupUi(self, minutiae_classificator):
+    def setupUi(self, minutiae_classificator, engine):
         minutiae_classificator.setObjectName("minutiae_classificator")
         minutiae_classificator.resize(968, 709)
         minutiae_classificator.setToolTipDuration(0)
@@ -20,7 +20,7 @@ class Ui_minutiae_classificator(object):
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
-        self.settings = Settings(self.application)
+        self.settings = Settings(self.application, engine)
         self.classificator = Classificator(self.application)
         self.horizontalLayout.addLayout(self.settings)
         self.horizontalLayout.addLayout(self.classificator)
@@ -30,7 +30,7 @@ class Ui_minutiae_classificator(object):
         self.retranslateUi(minutiae_classificator)
         self.settings.retranslateUi()
         self.classificator.retranslateUi()
-        
+
         QtCore.QMetaObject.connectSlotsByName(minutiae_classificator)
 
     def retranslateUi(self, minutiae_classificator):
@@ -39,10 +39,10 @@ class Ui_minutiae_classificator(object):
 
 
 class Gui:
-    def __init__(self):
+    def __init__(self, engine):
         app = QtWidgets.QApplication(sys.argv)
         minutiae_classificator = QtWidgets.QMainWindow()
         ui = Ui_minutiae_classificator()
-        ui.setupUi(minutiae_classificator)
+        ui.setupUi(minutiae_classificator, engine)
         minutiae_classificator.show()
         sys.exit(app.exec_())

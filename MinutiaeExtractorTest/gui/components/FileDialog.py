@@ -5,7 +5,6 @@ class FileDialog(QtWidgets.QFileDialog):
         QtWidgets.QFileDialog.__init__(self, parent)
 
     def open(self, label ,path = None, filter = None):
-        # self.setFilter(filter)
-        file_name = self.getOpenFileName(self, label, path, filter)
+        file_name, _filter = self.getOpenFileName(self, label, path, filter)
         
         return file_name
