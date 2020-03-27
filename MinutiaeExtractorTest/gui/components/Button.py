@@ -6,3 +6,6 @@ class Button(QtWidgets.QPushButton):
 
         self.setObjectName(name)
         self.clicked.connect(handleClick)
+
+    def set_is_disabled(self):
+        self.setEnabled(False)

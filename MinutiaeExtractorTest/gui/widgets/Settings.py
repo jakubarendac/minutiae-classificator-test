@@ -8,7 +8,7 @@ class Settings(QtWidgets.QVBoxLayout):
     def __init__(self, application, engine):
         QtWidgets.QVBoxLayout.__init__(self)
 
-        self.engine = engine;
+        self.engine = engine
 
         self.setSpacing(6)
         self.setObjectName("settings")
@@ -38,7 +38,7 @@ class Settings(QtWidgets.QVBoxLayout):
         self.label_load_network = Label(application, "label_load_network")
         self.settings_layout.addWidget(self.label_load_network)
 
-        self.button_load_network = Button(application, "button_load_network", self.handle_load_network_modules)
+        self.button_load_network = Button(application, "button_load_network", self.handle_load_network_modules_button_clicked)
         self.settings_layout.addWidget(self.button_load_network)
         
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -47,18 +47,21 @@ class Settings(QtWidgets.QVBoxLayout):
         self.label_do_the_job = Label(application, "label_do_the_job")
         self.settings_layout.addWidget(self.label_do_the_job)
 
-        self.button_choose_image = Button(application, "button_choose_image", self.handleButtonClicked)
+        self.button_choose_image = Button(application, "button_choose_image", self.handle_choose_image_button_clicked)
         self.settings_layout.addWidget(self.button_choose_image)
 
-        self.button_extract = Button(application, "button_extract", self.handleButtonClicked)
+        self.button_extract = Button(application, "button_extract", self.handle_get_extracted_minutiae)
         self.settings_layout.addWidget(self.button_extract)
 
-        self.button_classify = Button(application, "button_classify", self.handleButtonClicked)
+        self.button_classify = Button(application, "button_classify", self.handle_get_classified_minutiae)
         self.settings_layout.addWidget(self.button_classify)
 
         self.dialog = FileDialog()
 
         self.addLayout(self.settings_layout)
+
+    def set_classificator(self, classificator):
+        self.classificator = classificator
 
     def handle_coarse_net_button_clicked(self):
         coarse_net_path = self.dialog.open("Select CoarseNet pretrained path", None, "H5 files (*.h5)")
@@ -75,11 +78,27 @@ class Settings(QtWidgets.QVBoxLayout):
 
         self.engine.set_classify_net_path(classify_net_path)
 
-    def handle_load_network_modules(self):
+    def handle_load_network_modules_button_clicked(self):
+        self.button_load_network.set_is_disabled()
+        
         self.engine.load_modules()
 
-    def handleButtonClicked(self):
-        print "skap som z settgins"
+
+    def handle_choose_image_button_clicked(self):
+        input_image = self.dialog.open("Select input image", None, "Images (*.png *.tif)")
+
+        self.classificator.input_image.show_image(input_image)
+        self.input_image = input_image
+
+    def handle_get_extracted_minutiae(self):
+        extracted_miuntiae_image = self.engine.get_extracted_minutiae(self.input_image)
+
+        self.classificator.output_image.show_image(extracted_miuntiae_image)
+
+    def handle_get_classified_minutiae(self):
+        classified_miuntiae_image = self.engine.get_classified_minutiae(self.input_image)
+
+        self.classificator.output_image.show_image(classified_miuntiae_image)
        
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate

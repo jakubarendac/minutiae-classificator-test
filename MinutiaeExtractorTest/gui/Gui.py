@@ -31,6 +31,8 @@ class Ui_minutiae_classificator(object):
         self.settings.retranslateUi()
         self.classificator.retranslateUi()
 
+        self.settings.set_classificator(self.classificator)
+
         QtCore.QMetaObject.connectSlotsByName(minutiae_classificator)
 
     def retranslateUi(self, minutiae_classificator):

@@ -1,6 +1,7 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 from gui.components.Label import Label
+from gui.components.Image import Image
 
 class Classificator(QtWidgets.QVBoxLayout):
     def __init__(self, application):
@@ -20,10 +21,8 @@ class Classificator(QtWidgets.QVBoxLayout):
         self.classificator_layout.addWidget(self.label_section_classification)
         self.classificator_layout.addWidget(self.label_input_image)
 
-        self.input_image = QtWidgets.QGraphicsView(application)
-        self.output_image = QtWidgets.QGraphicsView(application)
-        self.input_image.setObjectName("input_image")
-        self.output_image.setObjectName("output_image")
+        self.input_image = Image(application, "input_image")
+        self.output_image = Image(application, "output_image")
 
         self.classificator_layout.addWidget(self.input_image)
         self.classificator_layout.addWidget(self.label_output_image)
