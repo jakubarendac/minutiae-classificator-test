@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
 
-from gui.components.Button import Button
 from gui.components.Label import Label
 
 class Classificator(QtWidgets.QVBoxLayout):
