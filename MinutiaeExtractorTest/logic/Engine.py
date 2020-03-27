@@ -20,10 +20,10 @@ class Engine:
         print 'loaded module'
     
     def get_extracted_minutiae(self, image_path):
-        print self.__minutiae_classificator.get_extracted_minutiae(image_path)
+        return self.__minutiae_classificator.get_extracted_minutiae(image_path)
 
 
     def get_classified_minutiae(self, image_path):
-        print self.__minutiae_classificator.get_classified_minutiae(image_path)
+        return self.__minutiae_classificator.get_classified_minutiae(image_path)
 
 

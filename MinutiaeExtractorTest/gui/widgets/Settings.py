@@ -56,6 +56,9 @@ class Settings(QtWidgets.QVBoxLayout):
         self.button_classify = Button(application, "button_classify", self.handle_get_classified_minutiae)
         self.settings_layout.addWidget(self.button_classify)
 
+        self.button_save_processed_image = Button(application, "button_save_processed_image", self.handle_save_processed_image)
+        self.settings_layout.addWidget(self.button_save_processed_image)
+
         self.dialog = FileDialog()
 
         self.addLayout(self.settings_layout)
@@ -91,14 +94,20 @@ class Settings(QtWidgets.QVBoxLayout):
         self.input_image = input_image
 
     def handle_get_extracted_minutiae(self):
-        extracted_miuntiae_image = self.engine.get_extracted_minutiae(self.input_image)
+        extracted_minutiae_image = self.engine.get_extracted_minutiae(self.input_image)
 
-        self.classificator.output_image.show_image(extracted_miuntiae_image)
+        self.classificator.output_image.show_image(extracted_minutiae_image, True)
+        self.processed_image = extracted_minutiae_image
 
     def handle_get_classified_minutiae(self):
-        classified_miuntiae_image = self.engine.get_classified_minutiae(self.input_image)
+        classified_minutiae_image = self.engine.get_classified_minutiae(self.input_image)
 
-        self.classificator.output_image.show_image(classified_miuntiae_image)
+        self.classificator.output_image.show_image(classified_minutiae_image, True)
+        self.processed_image = classified_minutiae_image
+
+    def handle_save_processed_image(self):
+        self.processed_image.save("processed.png")
+
        
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -113,3 +122,4 @@ class Settings(QtWidgets.QVBoxLayout):
         self.button_choose_image.setText(_translate("minutiae_classificator", "Choose minutiae image"))
         self.button_extract.setText(_translate("minutiae_classificator", "Extract minutiae !"))
         self.button_classify.setText(_translate("minutiae_classificator", "Classify minutiae !"))
+        self.button_save_processed_image.setText(_translate("minutiae_classificator", "Save processed image"))

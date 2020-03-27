@@ -39,12 +39,15 @@ class Ui_minutiae_classificator(object):
         _translate = QtCore.QCoreApplication.translate
         minutiae_classificator.setWindowTitle(_translate("minutiae_classificator", "Minutiae Classificator"))
 
-
 class Gui:
     def __init__(self, engine):
-        app = QtWidgets.QApplication(sys.argv)
+        self.app = QtWidgets.QApplication(sys.argv)
         minutiae_classificator = QtWidgets.QMainWindow()
         ui = Ui_minutiae_classificator()
         ui.setupUi(minutiae_classificator, engine)
         minutiae_classificator.show()
-        sys.exit(app.exec_())
+        sys.exit(self.close_application(engine))
+
+    def close_application(self, engine):
+        self.app.exec_()
+        del engine
