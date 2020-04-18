@@ -5,3 +5,6 @@
 # Image files
 *.png
 *.tif
+
+# Txt files
+*.txt

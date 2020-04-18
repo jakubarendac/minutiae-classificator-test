@@ -5,10 +5,11 @@ from gui.components.Label import Label
 from gui.components.FileDialog import FileDialog
 
 class Settings(QtWidgets.QVBoxLayout):
-    def __init__(self, application, engine):
+    def __init__(self, application, engine, minutiae_reader):
         QtWidgets.QVBoxLayout.__init__(self)
 
         self.engine = engine
+        self.minutiae_reader = minutiae_reader
 
         self.setSpacing(6)
         self.setObjectName("settings")
@@ -56,6 +57,9 @@ class Settings(QtWidgets.QVBoxLayout):
         self.button_classify = Button(application, "button_classify", self.handle_get_classified_minutiae)
         self.settings_layout.addWidget(self.button_classify)
 
+        self.button_choose_extracted_minutiae = Button(application, "button_choose_extracted_minutiae", self.handle_choose_extracted_minutiae)
+        self.settings_layout.addWidget(self.button_choose_extracted_minutiae)
+
         self.button_save_processed_image = Button(application, "button_save_processed_image", self.handle_save_processed_image)
         self.settings_layout.addWidget(self.button_save_processed_image)
 
@@ -94,16 +98,24 @@ class Settings(QtWidgets.QVBoxLayout):
         self.input_image = input_image
 
     def handle_get_extracted_minutiae(self):
-        extracted_minutiae_image = self.engine.get_extracted_minutiae(self.input_image)
+        extracted_minutiae_image = self.engine.get_single_extracted_minutiae(self.input_image)
 
         self.classificator.output_image.show_image(extracted_minutiae_image, True)
         self.processed_image = extracted_minutiae_image
 
     def handle_get_classified_minutiae(self):
-        classified_minutiae_image = self.engine.get_classified_minutiae(self.input_image)
+        classified_minutiae_image = self.engine.get_single_classified_minutiae(self.input_image)
 
         self.classificator.output_image.show_image(classified_minutiae_image, True)
         self.processed_image = classified_minutiae_image
+
+    def handle_choose_extracted_minutiae(self):
+        extracted_minutiae = self.dialog.open("Select file with extracted minutiae", None, "Extracted minutiae (*.iso-fmr)")
+
+        extracted_minutiae_data = self.minutiae_reader.get_single_extracted_minutiae_data(extracted_minutiae)
+
+        self.classificator.canvas.show_plot(self.input_image, extracted_minutiae_data)
+
 
     def handle_save_processed_image(self):
         self.processed_image.save("processed.png")
@@ -122,4 +134,5 @@ class Settings(QtWidgets.QVBoxLayout):
         self.button_choose_image.setText(_translate("minutiae_classificator", "Choose minutiae image"))
         self.button_extract.setText(_translate("minutiae_classificator", "Extract minutiae !"))
         self.button_classify.setText(_translate("minutiae_classificator", "Classify minutiae !"))
+        self.button_choose_extracted_minutiae.setText(_translate("minutiae_classificator", "Choose extracted minutiae"))
         self.button_save_processed_image.setText(_translate("minutiae_classificator", "Save processed image"))
