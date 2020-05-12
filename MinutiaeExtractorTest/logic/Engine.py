@@ -1,5 +1,6 @@
 import os
-from MinutiaeClassificator.MinutiaeExtractorWrapper import MinutiaeExtractorWrapper
+from MinutiaeClassificator.MinutiaeClassificatorWrapper import MinutiaeClassificator
+from MinutiaeClassificator.exceptions.MinutiaeClassificatorExceptions import CoarseNetPathMissingException, FineNetPathMissingException, ClassifyNetPathMissingException, MinutiaeNetNotLoadedException, ClassifyNetNotLoadedException
 
 class Minutiae:
     def __init__(self, file_name, minutiae_data):
@@ -11,7 +12,7 @@ class Minutiae:
 
 class Engine:
     def __init__(self):
-        self.__minutiae_classificator = MinutiaeExtractorWrapper()
+        self.__minutiae_classificator = MinutiaeClassificator()
 
     def set_coarse_net_path(self, path):
         self.__minutiae_classificator.get_coarse_net_path(path)
@@ -23,14 +24,22 @@ class Engine:
         self.__minutiae_classificator.get_classify_net_path(path)
 
     def load_extraction_module(self):
-        self.__minutiae_classificator.load_extraction_module()
+        try:
+            self.__minutiae_classificator.load_extraction_module()
+            print 'loaded extraction module'
 
-        print 'loaded extraction module'
+        except CoarseNetPathMissingException:
+            print 'coarse net missing'
+        except FineNetPathMissingException:
+            print 'fine net missing'
 
     def load_classification_module(self):
-        self.__minutiae_classificator.load_classification_module()
+        try:
+            self.__minutiae_classificator.load_classification_module()
+            print 'loaded classification module'
 
-        print 'loaded classification module'
+        except ClassifyNetPathMissingException:
+            print 'classify net missing'
 
     def load_modules(self):
         self.load_extraction_module()
@@ -54,10 +63,19 @@ class Engine:
         return minutiae_files
     
     def get_single_extracted_minutiae(self, image_path, as_image = True):
-        return self.__minutiae_classificator.get_extracted_minutiae(image_path, as_image)
+        try:
+            return self.__minutiae_classificator.get_extracted_minutiae(image_path, as_image)
+        except MinutiaeNetNotLoadedException:
+            print 'extraction module not loaded'
 
 
     def get_single_classified_minutiae(self, image_path,as_image = True):
-        return self.__minutiae_classificator.get_classified_minutiae(image_path, as_image)
+        try:
+            return self.__minutiae_classificator.get_extracted_and_classified_minutiae(image_path, as_image)
+        except MinutiaeNetNotLoadedException:
+            print 'extraction module not loaded'
+            
+        except ClassifyNetNotLoadedException:
+            print 'classification module not loaded'
 
 

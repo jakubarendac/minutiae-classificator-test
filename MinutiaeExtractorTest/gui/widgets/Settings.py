@@ -94,19 +94,19 @@ class Settings(QtWidgets.QVBoxLayout):
     def handle_choose_image_button_clicked(self):
         input_image = self.dialog.open("Select input image", None, "Images (*.png *.tif)")
 
-        self.classificator.input_image.show_image(input_image)
+        self.classificator.input_image_tab.image.show_image(input_image)
         self.input_image = input_image
 
     def handle_get_extracted_minutiae(self):
         extracted_minutiae_image = self.engine.get_single_extracted_minutiae(self.input_image)
 
-        self.classificator.output_image.show_image(extracted_minutiae_image, True)
+        self.classificator.output_image_tab.image.show_image(extracted_minutiae_image, True)
         self.processed_image = extracted_minutiae_image
 
     def handle_get_classified_minutiae(self):
         classified_minutiae_image = self.engine.get_single_classified_minutiae(self.input_image)
 
-        self.classificator.output_image.show_image(classified_minutiae_image, True)
+        self.classificator.output_image_tab.image.show_image(classified_minutiae_image, True)
         self.processed_image = classified_minutiae_image
 
     def handle_choose_extracted_minutiae(self):
