@@ -1,1 +1,10 @@
+# Editor settings
 .vscode/
+
+
+# Image files
+*.png
+*.tif
+
+# Txt files
+*.txt
